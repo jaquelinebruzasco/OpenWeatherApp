@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Open Weather App</string>
+    <string name="fragment_home_type_location_label">Type the location</string>
+    <string name="fragment_home_load_forecast">Load forecast</string>
+    <string name="fragment_home_btn_details">Details</string>
+    <string name="fragment_home_btn_sun_info">Sun Info</string>
 </resources>

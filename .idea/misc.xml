@@ -3,7 +3,13 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/jaque/AppData/Local/Android/Sdk/platforms/android-32/data/res/drawable/btn_plus.xml" value="0.3828125" />
+        <entry key="..\:/Users/jaque/Documents/Git/OpenWeatherApp/app/src/main/res/drawable/button_background.xml" value="0.3828125" />
+        <entry key="..\:/Users/jaque/Documents/Git/OpenWeatherApp/app/src/main/res/drawable/ic_temperature.xml" value="0.3828125" />
         <entry key="..\:/Users/jaque/Documents/Git/OpenWeatherApp/app/src/main/res/layout/activity_main.xml" value="0.2015625" />
+        <entry key="..\:/Users/jaque/Documents/Git/OpenWeatherApp/app/src/main/res/layout/fragment_details.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/jaque/Documents/Git/OpenWeatherApp/app/src/main/res/layout/fragment_home.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/jaque/Documents/Git/OpenWeatherApp/app/src/main/res/layout/toolbar.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/jaque/Documents/Git/app/src/main/res/layout/activity_main.xml" value="0.2957427536231884" />
       </map>
     </option>
