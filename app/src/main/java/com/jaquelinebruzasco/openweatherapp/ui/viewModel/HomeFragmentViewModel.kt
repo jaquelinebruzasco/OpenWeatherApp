@@ -4,12 +4,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jaquelinebruzasco.openweatherapp.domain.api.OpenWeatherRepository
 import com.jaquelinebruzasco.openweatherapp.domain.model.ForecastModel
-import com.jaquelinebruzasco.openweatherapp.domain.model.LocationModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import retrofit2.Response
+import okhttp3.ResponseBody
 import javax.inject.Inject
 
 @HiltViewModel
@@ -27,10 +26,14 @@ class HomeFragmentViewModel @Inject constructor(
             val response = repository.getLocation(location)
             if (response.isSuccessful) {
                 response.body()?.let {
-                    getForecast(latitude = it.latitude, longitude = it.longitude)
+                    if (it.isNullOrEmpty()) {
+                       checkError(response.errorBody())
+                    } else {
+                        getForecast(latitude = it[0].latitude, longitude = it[0].longitude)
+                    }
                 } ?: kotlin.run { _weather.value = OpenWeatherState.Failure("") }
             } else {
-                _weather.value = OpenWeatherState.Failure(response.message())
+                checkError(response.errorBody())
             }
         }
     }
@@ -39,10 +42,18 @@ class HomeFragmentViewModel @Inject constructor(
         val response = repository.getWeather(latitude, longitude)
         if (response.isSuccessful) {
             response.body()?.let {
-                OpenWeatherState.Success(it)
+                _weather.value = OpenWeatherState.Success(it)
             } ?: kotlin.run { _weather.value = OpenWeatherState.Failure("") }
         } else {
-            _weather.value = OpenWeatherState.Failure(response.message())
+            checkError(response.errorBody())
+        }
+    }
+
+    private fun checkError(errorResponse: ResponseBody?) {
+        if (errorResponse == null) {
+            _weather.value = OpenWeatherState.Failure("")
+        } else {
+            _weather.value = OpenWeatherState.Failure(errorResponse.string())
         }
     }
 }

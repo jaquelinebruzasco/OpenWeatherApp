@@ -1,11 +1,8 @@
 package com.jaquelinebruzasco.openweatherapp
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.NavHostFragment
-import com.jaquelinebruzasco.openweatherapp.databinding.ActivityMainBinding
-import com.jaquelinebruzasco.openweatherapp.databinding.FragmentHomeBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

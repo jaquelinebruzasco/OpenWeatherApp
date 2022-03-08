@@ -15,7 +15,7 @@ interface OpenWeatherApi {
         locationName: String,
         @Query("appid")
         apiKey: String = ApiConstants.API_KEY
-    ): Response<LocationModel>
+    ): Response<List<LocationModel>>
 
     @GET("/data/2.5/weather")
     suspend fun getWeather(

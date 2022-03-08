@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -11,7 +12,11 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import com.jaquelinebruzasco.openweatherapp.R
 import com.jaquelinebruzasco.openweatherapp.databinding.FragmentHomeBinding
+import com.jaquelinebruzasco.openweatherapp.domain.model.ApiConstants
 import com.jaquelinebruzasco.openweatherapp.domain.model.ForecastModel
+import com.jaquelinebruzasco.openweatherapp.domain.model.SunTimeInfoModel
+import com.jaquelinebruzasco.openweatherapp.ui.convertToDate
+import com.jaquelinebruzasco.openweatherapp.ui.loadIcon
 import com.jaquelinebruzasco.openweatherapp.ui.viewModel.HomeFragmentViewModel
 import com.jaquelinebruzasco.openweatherapp.ui.viewModel.OpenWeatherState
 import dagger.hilt.android.AndroidEntryPoint
@@ -62,6 +67,21 @@ class HomeFragment: Fragment() {
             tvForecastToday.text = resources.getString(R.string.fragment_home_forecast_today, etLocation.text.toString())
             tvForecastInfo.text = data.weather[0].forecast
             tvDescription.text = data.weather[0].description
+            loadIcon(
+                imageView = ivForecastIcon,
+                url = ApiConstants.ICON_URL,
+                code = data.weather[0].icon,
+                extension = ApiConstants.ICON_EXTENSION_URL
+            )
+            btnDetails.setOnClickListener {
+                val action = HomeFragmentDirections.actionFragmentHomeToFragmentDetails(data.temperature)
+                findNavController().navigate(action)
+            }
+            btnSunInfo.setOnClickListener { showSunInformation(data.sunTime) }
+
+            btnDetails.visibility = View.VISIBLE
+            btnSunInfo.visibility = View.VISIBLE
+
         }
     }
 
@@ -73,13 +93,19 @@ class HomeFragment: Fragment() {
         }
     }
 
-
     private fun initView() {
         _binding.apply {
             btnLoadForecast.setOnClickListener { viewModel.loadLocation(etLocation.text.toString()) }
-            btnDetails.setOnClickListener { findNavController().navigate(R.id.fragment_details) }
             btnDetails.visibility = View.GONE
             btnSunInfo.visibility = View.GONE
         }
+    }
+
+    private fun showSunInformation(sunData: SunTimeInfoModel) {
+        val alertDialog = this.context?.let { AlertDialog.Builder(it) }
+        alertDialog?.apply {
+            setTitle(R.string.fragment_home_sun_info)
+            setMessage(resources.getString(R.string.fragment_home_sunrise_sunset, sunData.sunrise.convertToDate(), sunData.sunset.convertToDate() ))
+        }?.create()?.show()
     }
 }

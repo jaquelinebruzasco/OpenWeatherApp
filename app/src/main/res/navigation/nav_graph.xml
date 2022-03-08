@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/fragment_home"
         android:name="com.jaquelinebruzasco.openweatherapp.ui.fragments.HomeFragment"
-        android:label="FragmentHome"
+        android:label="HomeFragment"
         tools:layout="@layout/fragment_home">
         <action
             android:id="@+id/action_fragment_home_to_fragment_details"
@@ -18,8 +18,13 @@
     <fragment
         android:id="@+id/fragment_details"
         android:name="com.jaquelinebruzasco.openweatherapp.ui.fragments.DetailsFragment"
-        android:label="FragmentDetails"
-        tools:layout="@layout/fragment_details" />
+        android:label="DetailsFragment"
+        tools:layout="@layout/fragment_details">
+        <argument
+            android:name="dataInfo"
+            app:argType="com.jaquelinebruzasco.openweatherapp.domain.model.TemperatureInfoModel" />
+
+    </fragment>
 
 
 </navigation>

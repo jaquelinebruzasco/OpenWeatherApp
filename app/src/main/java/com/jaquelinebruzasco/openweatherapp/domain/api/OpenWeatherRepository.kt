@@ -8,7 +8,7 @@ import javax.inject.Inject
 class OpenWeatherRepository @Inject constructor(
     private val api: OpenWeatherApi
 ) {
-    suspend fun getLocation(locationName: String): Response<LocationModel> {
+    suspend fun getLocation(locationName: String): Response<List<LocationModel>> {
         return api.getLocation(locationName)
     }
     suspend fun getWeather(latitude: Double, longitude: Double): Response<ForecastModel> {

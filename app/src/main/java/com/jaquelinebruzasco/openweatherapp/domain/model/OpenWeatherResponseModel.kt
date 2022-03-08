@@ -15,24 +15,24 @@ data class ForecastModel(
 data class WeatherInfoModel(
     @SerializedName("main")
     val forecast: String,
-    @SerializedName("weather")
+    @SerializedName("description")
     val description: String,
-    @SerializedName("weather")
+    @SerializedName("icon")
     val icon: String
 ): Serializable
 
 data class TemperatureInfoModel(
-    @SerializedName("main")
+    @SerializedName("temp")
     val temperature: Double,
-    @SerializedName("main")
+    @SerializedName("feels_like")
     val feelsLike: Double,
-    @SerializedName("main")
+    @SerializedName("humidity")
     val humidity: Double
 ): Serializable
 
 data class SunTimeInfoModel(
-    @SerializedName("sys")
+    @SerializedName("sunrise")
     val sunrise: Int,
-    @SerializedName("sys")
+    @SerializedName("sunset")
     val sunset: Int
 ): Serializable

@@ -10,4 +10,6 @@
     <string name="fragment_details_btn_back">Back</string>
     <string name="location_error_message">Failed to fetch data</string>
     <string name="fragment_home_forecast_today">Current weather at %s</string>
+    <string name="fragment_home_sun_info">Sun Information</string>
+    <string name="fragment_home_sunrise_sunset">Sunrise: %s\nSunset: %s</string>
 </resources>
