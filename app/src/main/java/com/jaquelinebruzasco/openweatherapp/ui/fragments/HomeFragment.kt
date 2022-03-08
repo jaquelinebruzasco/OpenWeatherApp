@@ -24,7 +24,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class HomeFragment: Fragment() {
+class HomeFragment : Fragment() {
 
     private val viewModel by viewModels<HomeFragmentViewModel>()
     private lateinit var _binding: FragmentHomeBinding
@@ -49,12 +49,16 @@ class HomeFragment: Fragment() {
         lifecycleScope.launchWhenCreated {
             viewModel.weather.collectLatest { state ->
                 when (state) {
-                    is OpenWeatherState.Idle -> Unit
-                    is OpenWeatherState.Loading -> {
-                        // TODO: progress bar
+                    is OpenWeatherState.Idle -> hideProgressBar()
+                    is OpenWeatherState.Loading -> showProgressBar()
+                    is OpenWeatherState.Failure -> {
+                        hideProgressBar()
+                        showFailureMessage(state.message)
                     }
-                    is OpenWeatherState.Failure -> showFailureMessage(state.message)
-                    is OpenWeatherState.Success -> loadForecastView(state.data)
+                    is OpenWeatherState.Success -> {
+                        hideProgressBar()
+                        loadForecastView(state.data)
+                    }
                 }
 
             }
@@ -64,17 +68,17 @@ class HomeFragment: Fragment() {
 
     private fun loadForecastView(data: ForecastModel) {
         _binding.apply {
-            tvForecastToday.text = resources.getString(R.string.fragment_home_forecast_today, etLocation.text.toString())
+            tvForecastToday.text =
+                resources.getString(R.string.fragment_home_forecast_today, data.name)
             tvForecastInfo.text = data.weather[0].forecast
             tvDescription.text = data.weather[0].description
             loadIcon(
                 imageView = ivForecastIcon,
-                url = ApiConstants.ICON_URL,
-                code = data.weather[0].icon,
-                extension = ApiConstants.ICON_EXTENSION_URL
+                code = data.weather[0].icon
             )
             btnDetails.setOnClickListener {
-                val action = HomeFragmentDirections.actionFragmentHomeToFragmentDetails(data.temperature)
+                val action =
+                    HomeFragmentDirections.actionFragmentHomeToFragmentDetails(data.temperature)
                 findNavController().navigate(action)
             }
             btnSunInfo.setOnClickListener { showSunInformation(data.sunTime) }
@@ -87,7 +91,11 @@ class HomeFragment: Fragment() {
 
     private fun showFailureMessage(message: String) {
         if (message.isEmpty()) {
-            Snackbar.make(requireView(), resources.getString(R.string.location_error_message), Snackbar.LENGTH_LONG).show()
+            Snackbar.make(
+                requireView(),
+                resources.getString(R.string.location_error_message),
+                Snackbar.LENGTH_LONG
+            ).show()
         } else {
             Snackbar.make(requireView(), message, Snackbar.LENGTH_LONG).show()
         }
@@ -105,7 +113,27 @@ class HomeFragment: Fragment() {
         val alertDialog = this.context?.let { AlertDialog.Builder(it) }
         alertDialog?.apply {
             setTitle(R.string.fragment_home_sun_info)
-            setMessage(resources.getString(R.string.fragment_home_sunrise_sunset, sunData.sunrise.convertToDate(), sunData.sunset.convertToDate() ))
+            setMessage(
+                resources.getString(
+                    R.string.fragment_home_sunrise_sunset,
+                    sunData.sunrise.convertToDate(),
+                    sunData.sunset.convertToDate()
+                )
+            )
         }?.create()?.show()
+    }
+
+    private fun showProgressBar() {
+        _binding.apply {
+            progressCircular.visibility = View.VISIBLE
+            layoutContent.visibility = View.GONE
+        }
+    }
+
+    private fun hideProgressBar() {
+        _binding.apply {
+            progressCircular.visibility = View.GONE
+            layoutContent.visibility = View.VISIBLE
+        }
     }
 }

@@ -9,12 +9,10 @@ import java.util.*
 
 fun loadIcon(
     imageView: ImageView,
-    url: String,
-    code: String,
-    extension: String
+    code: String
 ) {
     Glide.with(imageView.context)
-        .load("$url$code$extension")
+        .load("${ApiConstants.ICON_URL}$code${ApiConstants.ICON_EXTENSION_URL}")
         .into(imageView)
 }
 

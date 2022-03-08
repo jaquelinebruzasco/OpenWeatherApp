@@ -9,7 +9,9 @@ data class ForecastModel(
     @SerializedName("main")
     val temperature: TemperatureInfoModel,
     @SerializedName("sys")
-    val sunTime: SunTimeInfoModel
+    val sunTime: SunTimeInfoModel,
+    @SerializedName("name")
+    val name: String
 ): Serializable
 
 data class WeatherInfoModel(
