@@ -38,14 +38,16 @@ class HomeFragmentViewModel @Inject constructor(
         }
     }
 
-    private suspend fun getForecast(latitude: Double, longitude: Double) {
-        val response = repository.getWeather(latitude, longitude)
-        if (response.isSuccessful) {
-            response.body()?.let {
-                _weather.value = OpenWeatherState.Success(it)
-            } ?: kotlin.run { _weather.value = OpenWeatherState.Failure("") }
-        } else {
-            checkError(response.errorBody())
+    fun getForecast(latitude: Double, longitude: Double) {
+        viewModelScope.launch {
+            val response = repository.getWeather(latitude, longitude)
+            if (response.isSuccessful) {
+                response.body()?.let {
+                    _weather.value = OpenWeatherState.Success(it)
+                } ?: kotlin.run { _weather.value = OpenWeatherState.Failure("") }
+            } else {
+                checkError(response.errorBody())
+            }
         }
     }
 

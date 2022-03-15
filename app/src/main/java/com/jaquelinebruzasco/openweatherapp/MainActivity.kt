@@ -1,5 +1,7 @@
 package com.jaquelinebruzasco.openweatherapp
 
+import android.location.Location
+import android.location.LocationListener
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
